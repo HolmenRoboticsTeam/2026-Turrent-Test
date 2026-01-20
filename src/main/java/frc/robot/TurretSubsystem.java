@@ -17,7 +17,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class TurretSubsystem extends SubsystemBase {
 
   private SparkMax rotationMotor = new SparkMax(0, MotorType.kBrushless);
-  private SparkMax flyWheelMotor = new SparkMax(1, MotorType.kBrushless);
+
+  private SparkMax flyWheelMotorRight = new SparkMax(1, MotorType.kBrushless);
+  private SparkMax flyWheelMotorLeft = new SparkMax(2, MotorType.kBrushless);
 
   /** Creates a new TurretSubsystem. */
   public TurretSubsystem() {
@@ -34,7 +36,8 @@ public class TurretSubsystem extends SubsystemBase {
     SparkMaxConfig flyWheelConfig = new SparkMaxConfig();
 
     flyWheelConfig.closedLoop.pid(1.0, 0.0, 0.0);
-    flyWheelMotor.configure(rotationConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    flyWheelMotorRight.configure(flyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    flyWheelMotorLeft.configure(flyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   @Override
@@ -47,6 +50,7 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void setTargetSpeed(double volts) {
-    flyWheelMotor.getClosedLoopController().setSetpoint(volts, ControlType.kVoltage);
+    flyWheelMotorRight.getClosedLoopController().setSetpoint(volts, ControlType.kVoltage);
+    flyWheelMotorLeft.getClosedLoopController().setSetpoint(-volts, ControlType.kVoltage);
   }
 }
