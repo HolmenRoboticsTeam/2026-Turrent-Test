@@ -22,11 +22,15 @@ public class TurretSubsystem extends SubsystemBase {
   /** Creates a new TurretSubsystem. */
   public TurretSubsystem() {
 
+    // Set the rotation config
     SparkMaxConfig rotationConfig = new SparkMaxConfig();
-
     rotationConfig.closedLoop.pid(1.0, 0.0, 0.0);
     rotationMotor.configure(rotationConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
+    // Get the AbsoluteEncoder Position
+    rotationMotor.getEncoder().setPosition(rotationMotor.getAbsoluteEncoder().getPosition());
+
+    // Set the fly wheel config
     SparkMaxConfig flyWheelConfig = new SparkMaxConfig();
 
     flyWheelConfig.closedLoop.pid(1.0, 0.0, 0.0);
