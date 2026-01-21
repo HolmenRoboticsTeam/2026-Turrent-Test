@@ -24,7 +24,7 @@ public class RobotContainer {
     turret.setDefaultCommand(Commands.run(() -> {
       turret.setTargetSpeed(12.0 * controller.getLeftTriggerAxis());
 
-      turret.setTargetRotation(Rotation2d.fromRotations(0.5 * controller.getLeftX()));
+      // turret.setTargetRotation(Rotation2d.fromRotations(0.5 * controller.getLeftX()));
 
     }, turret));
   }

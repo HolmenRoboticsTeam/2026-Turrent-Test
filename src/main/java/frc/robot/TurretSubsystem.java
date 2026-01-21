@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class TurretSubsystem extends SubsystemBase {
 
-  private SparkMax rotationMotor = new SparkMax(0, MotorType.kBrushless);
+  // private SparkMax rotationMotor = new SparkMax(0, MotorType.kBrushless);
 
   private SparkMax flyWheelMotorRight = new SparkMax(1, MotorType.kBrushless);
   private SparkMax flyWheelMotorLeft = new SparkMax(2, MotorType.kBrushless);
@@ -24,13 +24,13 @@ public class TurretSubsystem extends SubsystemBase {
   /** Creates a new TurretSubsystem. */
   public TurretSubsystem() {
 
-    // Set the rotation config
-    SparkMaxConfig rotationConfig = new SparkMaxConfig();
-    rotationConfig.closedLoop.pid(1.0, 0.0, 0.0);
-    rotationMotor.configure(rotationConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    // // Set the rotation config
+    // SparkMaxConfig rotationConfig = new SparkMaxConfig();
+    // rotationConfig.closedLoop.pid(1.0, 0.0, 0.0);
+    // rotationMotor.configure(rotationConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    // Get the AbsoluteEncoder Position
-    rotationMotor.getEncoder().setPosition(rotationMotor.getAbsoluteEncoder().getPosition());
+    // // Get the AbsoluteEncoder Position
+    // rotationMotor.getEncoder().setPosition(rotationMotor.getAbsoluteEncoder().getPosition());
 
     // Set the fly wheel config
     SparkMaxConfig flyWheelConfig = new SparkMaxConfig();
@@ -46,7 +46,7 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void setTargetRotation(Rotation2d rot) {
-    rotationMotor.getClosedLoopController().setSetpoint(rot.getRadians(), ControlType.kPosition);
+    // rotationMotor.getClosedLoopController().setSetpoint(rot.getRadians(), ControlType.kPosition);
   }
 
   public void setTargetSpeed(double volts) {
