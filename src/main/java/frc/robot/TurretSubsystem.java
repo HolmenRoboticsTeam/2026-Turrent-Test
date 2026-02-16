@@ -10,34 +10,37 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class TurretSubsystem extends SubsystemBase {
 
-  // private SparkMax rotationMotor = new SparkMax(0, MotorType.kBrushless);
+  private SparkMax flyWheelMotorLeft = new SparkMax(1, MotorType.kBrushless);
+  private SparkMax flyWheelMotorRight = new SparkMax(2, MotorType.kBrushless);
 
-  private SparkMax flyWheelMotorRight = new SparkMax(1, MotorType.kBrushless);
-  private SparkMax flyWheelMotorLeft = new SparkMax(2, MotorType.kBrushless);
+  private SparkMax angleMotor = new SparkMax(3, MotorType.kBrushless);
 
   /** Creates a new TurretSubsystem. */
   public TurretSubsystem() {
 
-    // // Set the rotation config
-    // SparkMaxConfig rotationConfig = new SparkMaxConfig();
-    // rotationConfig.closedLoop.pid(1.0, 0.0, 0.0);
-    // rotationMotor.configure(rotationConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    // Set the fly wheel configs
+    SparkMaxConfig leftFlyWheelConfig = new SparkMaxConfig();
 
-    // // Get the AbsoluteEncoder Position
-    // rotationMotor.getEncoder().setPosition(rotationMotor.getAbsoluteEncoder().getPosition());
+    leftFlyWheelConfig.closedLoop.pid(0.1, 0.0, 0.0);
+    leftFlyWheelConfig.inverted(false);
+    flyWheelMotorLeft.configure(leftFlyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    // Set the fly wheel config
-    SparkMaxConfig flyWheelConfig = new SparkMaxConfig();
+    SparkMaxConfig rightFlyWheelConfig = new SparkMaxConfig();
 
-    flyWheelConfig.closedLoop.pid(1.0, 0.0, 0.0);
-    flyWheelMotorRight.configure(flyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    flyWheelMotorLeft.configure(flyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    rightFlyWheelConfig.closedLoop.pid(0.1, 0.0, 0.0);
+    rightFlyWheelConfig.inverted(true);
+    flyWheelMotorRight.configure(rightFlyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    SparkMaxConfig angleConfig = new SparkMaxConfig();
+
+    angleConfig.encoder.positionConversionFactor(2.0 * Math.PI * (15.0 / 36.0));
+    angleConfig.closedLoop.pid(0.01, 0.0, 0.0);
+    angleConfig.inverted(false);
+    angleMotor.configure(angleConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   @Override
@@ -45,12 +48,12 @@ public class TurretSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setTargetRotation(Rotation2d rot) {
-    // rotationMotor.getClosedLoopController().setSetpoint(rot.getRadians(), ControlType.kPosition);
+  public void setTargetAngle(double rad) {
+    angleMotor.getClosedLoopController().setSetpoint(rad, ControlType.kPosition);
   }
 
-  public void setTargetSpeed(double volts) {
-    flyWheelMotorRight.getClosedLoopController().setSetpoint(volts, ControlType.kVoltage);
-    flyWheelMotorLeft.getClosedLoopController().setSetpoint(-volts, ControlType.kVoltage);
+  public void setTargetSpeed(double RPM) {
+    flyWheelMotorLeft.getClosedLoopController().setSetpoint(RPM, ControlType.kVelocity);
+    flyWheelMotorRight.getClosedLoopController().setSetpoint(RPM, ControlType.kVelocity);
   }
 }
