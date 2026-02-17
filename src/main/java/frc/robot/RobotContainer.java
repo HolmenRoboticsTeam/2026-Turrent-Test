@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -20,9 +21,9 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    turret.setDefaultCommand(Commands.runOnce(() -> {
-      turret.setTargetAngle(45.0 * controller.getRightTriggerAxis());
-      turret.setTargetAngle(4000.0 * controller.getLeftTriggerAxis());
+    turret.setDefaultCommand(Commands.run(() -> {
+      turret.setTargetAngle((Math.PI / 4.0) * MathUtil.applyDeadband(controller.getRightTriggerAxis(), 0.1));
+      turret.setTargetSpeed(4000.0 * MathUtil.applyDeadband(controller.getLeftTriggerAxis(), 0.1));
     }, turret));
 
   }
