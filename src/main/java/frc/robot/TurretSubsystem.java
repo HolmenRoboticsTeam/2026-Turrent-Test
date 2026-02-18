@@ -25,13 +25,13 @@ public class TurretSubsystem extends SubsystemBase {
     // Set the fly wheel configs
     SparkMaxConfig leftFlyWheelConfig = new SparkMaxConfig();
 
-    leftFlyWheelConfig.closedLoop.pid(0.0, 0.0, 0.0);
+    leftFlyWheelConfig.closedLoop.pid(0.00001, 0.0, 0.0).feedForward.kV(0.002).kS(0.6);
     leftFlyWheelConfig.inverted(false);
     flyWheelMotorLeft.configure(leftFlyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     SparkMaxConfig rightFlyWheelConfig = new SparkMaxConfig();
 
-    rightFlyWheelConfig.closedLoop.pid(0.0, 0.0, 0.0);
+    rightFlyWheelConfig.closedLoop.pid(0.00001, 0.0, 0.0).feedForward.kV(0.002).kS(0.6);
     rightFlyWheelConfig.inverted(true);
     flyWheelMotorRight.configure(rightFlyWheelConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -55,7 +55,7 @@ public class TurretSubsystem extends SubsystemBase {
 
   public void setTargetSpeed(double RPM) {
 
-    flyWheelMotorLeft.set(RPM / 4000.0);
-    flyWheelMotorRight.set(RPM / 4000.0);
+    flyWheelMotorLeft.getClosedLoopController().setSetpoint(RPM, ControlType.kVelocity);
+    flyWheelMotorRight.getClosedLoopController().setSetpoint(RPM, ControlType.kVelocity);
   }
 }
